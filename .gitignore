@@ -1,5 +1,6 @@
 filelists/miniImagenet/tmp/
 checkpoints/
+features/
 log/
 __pycache__/
 *.DS_Store

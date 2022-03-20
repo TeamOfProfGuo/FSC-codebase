@@ -47,9 +47,18 @@ exit
 # switch to project root
 cd /scratch/$USER/FSC-codebase
 
-# pretrain
+# train
 sbatch train.slurm
+# => log: ./train.log
 # => save dir: ./checkpoints/
 
-# To be updated.
+# save features
+sbatch save_features.slurm
+# => log: ./save_features.log
+# => save dir: ./features/
+
+# test
+sbatch test.slurm
+# => log: ./test.log
+# => results: ./record/results.txt
 ```
