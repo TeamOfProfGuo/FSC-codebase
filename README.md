@@ -41,9 +41,21 @@ exit
 ```
 
 ## Codebase Testing
+**Note:** Modify the path in slurm scripts (as needed) before you start.
 ```
-# Note: Remember to modify the path in slurm scripts as needed.
+# switch to project root
+cd /scratch/$USER/FSC-codebase
 
+# train & save & test
+sbatch train-save-test.slurm
+
+# After the job completes:
+cat record/results.txt
+# Intended output:
+# Time: 20220320-191117, Setting: miniImagenet-novel-Conv4-baseline-aug 5shot 5way_test, Acc: 600 Test Acc = 59.89% +- 0.74%
+```
+Alternatively, you can also run them one by one:
+```
 # switch to project root
 cd /scratch/$USER/FSC-codebase
 
@@ -61,4 +73,9 @@ sbatch save_features.slurm
 sbatch test.slurm
 # => log: ./test.log
 # => results: ./record/results.txt
+
+# After the job completes:
+cat record/results.txt
+# Intended output:
+# Time: 20220320-191117, Setting: miniImagenet-novel-Conv4-baseline-aug 5shot 5way_test, Acc: 600 Test Acc = 59.89% +- 0.74%
 ```
