@@ -7,7 +7,7 @@ import random
 import re
 
 cwd = os.getcwd() 
-data_path = join(cwd,'ILSVRC2015/Data/CLS-LOC/train')
+data_path = '/imagenet/train'
 savedir = './'
 dataset_list = ['base', 'val', 'novel']
 
@@ -17,7 +17,7 @@ dataset_list = ['base', 'val', 'novel']
 cl = -1
 folderlist = []
 
-datasetmap = {'base':'train','val':'val','novel':'test'};
+datasetmap = {'base':'train','val':'val','novel':'test'}
 filelists = {'base':{},'val':{},'novel':{} }
 filelists_flat = {'base':[],'val':[],'novel':[] }
 labellists_flat = {'base':[],'val':[],'novel':[] }
