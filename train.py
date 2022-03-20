@@ -84,7 +84,7 @@ if __name__=='__main__':
             elif params.dataset in ['CUB']:
                 params.stop_epoch = 200 # This is different as stated in the open-review paper. However, using 400 epoch in baseline actually lead to over-fitting
             elif params.dataset in ['miniImagenet', 'cross']:
-                params.stop_epoch = 100 # testing codebase
+                params.stop_epoch = 10  # testing codebase
                 # params.stop_epoch = 400
             else:
                 params.stop_epoch = 400 #default
