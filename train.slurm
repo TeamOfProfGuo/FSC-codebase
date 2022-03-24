@@ -6,13 +6,23 @@
 #SBATCH --time=4:00:00
 #SBATCH --gres=gpu:1
 
-singularity exec --nv --bind /scratch/$USER \
---overlay /scratch/$USER/overlay-25GB-500K.ext3:ro \
---overlay /vast/work/public/ml-datasets/imagenet/imagenet-train.sqf:ro \
---overlay /vast/work/public/ml-datasets/imagenet/imagenet-val.sqf:ro \
-/scratch/$USER/cuda11.4.2-cudnn8.2.4-devel-ubuntu20.04.3.sif \
+
+dataset=$1
+model=$2
+exp_dir=exp/${dataset}/${model}
+model_dir=${exp_dir}/model
+result_dir=${exp_dir}/result
+# config=config/${dataset}/${dataset}_${exp_name}.yaml
+
+mkdir -p ${exp_dir}
+
+
+echo "start"
+singularity exec --nv \
+--overlay /scratch/lg154/python36/python36.ext3:ro \
+/scratch/work/public/singularity/cuda11.2.2-cudnn8-devel-ubuntu20.04.sif \
 /bin/bash -c "
-source /ext3/env.sh
-cd /scratch/$USER/FSC-codebase
-python train.py --dataset miniImagenet --model Conv4 --method baseline --train_aug > train.log 2>&1
+source /ext3/env.sh;
+python train.py --dataset ${dataset} --model ${model} --method baseline --train_aug > ${exp_dir}/train.log 2>&1
 "
+echo "finish"
