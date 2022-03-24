@@ -56,7 +56,8 @@ if __name__ == '__main__':
         assert params.model == 'Conv4' and not params.train_aug ,'omniglot only support Conv4 without augmentation'
         params.model = 'Conv4S'
 
-    split = params.split
+    ###===================================================   读取数据   =================================================
+    split = params.split   # split = 'novel'
     if params.dataset == 'cross':
         if split == 'base':
             loadfile = configs.data_dir['miniImagenet'] + 'all.json' 
@@ -70,6 +71,10 @@ if __name__ == '__main__':
     else:
         loadfile = configs.data_dir[params.dataset] + split + '.json'
 
+    datamgr = SimpleDataManager(image_size, batch_size=64)
+    data_loader = datamgr.get_data_loader(loadfile, aug=False)
+
+    ###===================================================   读取ckpt   =================================================
     checkpoint_dir = '%s/checkpoints/%s/%s_%s' %(configs.save_dir, params.dataset, params.model, params.method)
     if params.train_aug:
         checkpoint_dir += '_aug'
@@ -86,11 +91,9 @@ if __name__ == '__main__':
     if params.save_iter != -1:
         outfile = os.path.join( checkpoint_dir.replace("checkpoints","features"), split + "_" + str(params.save_iter)+ ".hdf5") 
     else:
-        outfile = os.path.join( checkpoint_dir.replace("checkpoints","features"), split + ".hdf5") 
+        outfile = os.path.join( checkpoint_dir.replace("checkpoints","features"), split + ".hdf5")
 
-    datamgr         = SimpleDataManager(image_size, batch_size = 64)
-    data_loader      = datamgr.get_data_loader(loadfile, aug = False)
-
+   ###===================================================   读取模型   =================================================
     if params.method in ['relationnet', 'relationnet_softmax']:
         if params.model == 'Conv4': 
             model = backbone.Conv4NP()

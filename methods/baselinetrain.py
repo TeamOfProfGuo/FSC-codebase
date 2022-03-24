@@ -8,9 +8,10 @@ import numpy as np
 import torch.nn.functional as F
 
 class BaselineTrain(nn.Module):
-    def __init__(self, model_func, num_class, loss_type = 'softmax'):
+    def __init__(self, model_func, num_class, loss_type = 'softmax', cuda=True):
         super(BaselineTrain, self).__init__()
         self.feature    = model_func()
+        self.cuda = cuda
         if loss_type == 'softmax':
             self.classifier = nn.Linear(self.feature.final_feat_dim, num_class)
             self.classifier.bias.data.fill_(0)
@@ -22,14 +23,14 @@ class BaselineTrain(nn.Module):
         self.DBval = False; #only set True for CUB dataset, see issue #31
 
     def forward(self,x):
-        x    = Variable(x.cuda())
+        x    = Variable(x.cuda() if self.cuda else x)
         out  = self.feature.forward(x)
         scores  = self.classifier.forward(out)
         return scores
 
     def forward_loss(self, x, y):
         scores = self.forward(x)
-        y = Variable(y.cuda())
+        y = Variable(y.cuda() if self.cuda else y)
         return self.loss_fn(scores, y )
     
     def train_loop(self, epoch, train_loader, optimizer):
@@ -57,8 +58,8 @@ class BaselineTrain(nn.Module):
     def analysis_loop(self, val_loader, record = None):
         class_file  = {}
         for i, (x,y) in enumerate(val_loader):
-            x = x.cuda()
-            x_var = Variable(x)
+     
+            x_var = Variable(x.cuda() if self.cuda else x)
             feats = self.feature.forward(x_var).data.cpu().numpy()
             labels = y.cpu().numpy()
             for f, l in zip(feats, labels):
