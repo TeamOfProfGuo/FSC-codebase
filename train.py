@@ -1,3 +1,5 @@
+# encoding:utf-8
+
 import numpy as np
 import torch
 import torch.nn as nn
@@ -52,7 +54,7 @@ if __name__=='__main__':
     np.random.seed(10)
     params = parse_args('train')
 
-
+    ###===================================================   读取数据   =================================================
     if params.dataset == 'cross':
         base_file = configs.data_dir['miniImagenet'] + 'all.json' 
         val_file   = configs.data_dir['CUB'] + 'val.json' 
@@ -95,8 +97,8 @@ if __name__=='__main__':
                 params.stop_epoch = 400
             else:
                 params.stop_epoch = 600 #default
-     
 
+    ###============================================== DataLoader 和 模型   ==============================================
     if params.method in ['baseline', 'baseline++'] :
         base_datamgr    = SimpleDataManager(image_size, batch_size = 16)
         base_loader     = base_datamgr.get_data_loader( base_file , aug = params.train_aug )
@@ -156,6 +158,7 @@ if __name__=='__main__':
 
     model = model.cuda()
 
+    ###=============================================  存checkpoint 和 log  =================================================
     params.checkpoint_dir = '%s/checkpoints/%s/%s_%s' %(configs.save_dir, params.dataset, params.model, params.method)
     if params.train_aug:
         params.checkpoint_dir += '_aug'
