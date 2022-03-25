@@ -1,3 +1,4 @@
+# encoding:utf-8
 # This code is modified from https://github.com/facebookresearch/low-shot-shrink-hallucinate
 
 import torch

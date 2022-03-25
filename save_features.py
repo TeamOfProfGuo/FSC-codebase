@@ -1,3 +1,5 @@
+# encoding:utf-8
+
 import numpy as np
 import torch
 from torch.autograd import Variable
@@ -28,11 +30,11 @@ def save_features(model, data_loader, outfile ):
             print('{:d}/{:d}'.format(i, len(data_loader)))
         x = x.cuda()
         x_var = Variable(x)
-        feats = model(x_var)
+        feats = model(x_var)   # [B/64, d]
         if all_feats is None:
             all_feats = f.create_dataset('all_feats', [max_count] + list( feats.size()[1:]) , dtype='f')
-        all_feats[count:count+feats.size(0)] = feats.data.cpu().numpy()
-        all_labels[count:count+feats.size(0)] = y.cpu().numpy()
+        all_feats[count:count+feats.size(0)] = feats.data.cpu().numpy()    # 写batch所有数据的feature
+        all_labels[count:count+feats.size(0)] = y.cpu().numpy()            # 写batch所有数据的GT label
         count = count + feats.size(0)
 
     count_var = f.create_dataset('count', (1,), dtype='i')

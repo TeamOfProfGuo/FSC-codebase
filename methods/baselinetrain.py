@@ -58,7 +58,6 @@ class BaselineTrain(nn.Module):
     def analysis_loop(self, val_loader, record = None):
         class_file  = {}
         for i, (x,y) in enumerate(val_loader):
-     
             x_var = Variable(x.cuda() if self.cuda else x)
             feats = self.feature.forward(x_var).data.cpu().numpy()
             labels = y.cpu().numpy()
