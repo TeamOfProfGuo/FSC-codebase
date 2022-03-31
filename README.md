@@ -17,7 +17,7 @@ cd FSC-codebase
 ```
 
 ## Datasets
-We use miniImagenet for testing, please request your access to ImageNet on Greene.
+We use miniImagenet for testing, please [request your access to ImageNet on Greene](https://sites.google.com/nyu.edu/nyu-hpc/hpc-systems/hpc-storage/datasets#h.8ez1zupnvbl3).
 ```
 # prepare miniImagenet
 
